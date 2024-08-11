@@ -61,7 +61,7 @@ open class WeaponItemFacet(itemSlot: ItemSlot) : ItemFacet(itemSlot) {
                 STABILIZE_COMPARISON,
             )
 
-        private fun estimateDamage(o1: WeaponItemFacet): Float {
+        private fun estimateDamage(o1: WeaponItemFacet): Double {
             // Already contains damage enchantments like sharpness
             val attackDamage = o1.itemStack.attackDamage
             val attackSpeed = o1.itemStack.attackSpeed
@@ -78,12 +78,15 @@ open class WeaponItemFacet(itemSlot: ItemSlot) : ItemFacet(itemSlot) {
 
             val additionalFactor = DAMAGE_ESTIMATOR.estimateValue(o1.itemStack)
 
-            return speedAdjustedDamage * (1.0F + additionalFactor) + damageFromFireAspect
+            return speedAdjustedDamage * (1.0 + additionalFactor) + damageFromFireAspect
         }
     }
 
     override val category: ItemCategory
         get() = ItemCategory(ItemType.WEAPON, 0)
+
+    override val providedItemFunctions: Set<ItemFunction>
+        get() = setOf(ItemFunction.WEAPON_LIKE)
 
     override fun compareTo(other: ItemFacet): Int {
         return COMPARATOR.compare(this, other as WeaponItemFacet)
